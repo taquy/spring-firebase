@@ -8,11 +8,11 @@
         <version>2.3.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <groupId>fpt.fbiz</groupId>
+    <artifactId>1.0.0</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
-    <description>Demo project for Spring Boot</description>
+    <name>f-remote</name>
+    <description>f-remote project</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -69,7 +69,6 @@
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-server-sdk</artifactId>
-            <version>3.0.1</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
@@ -97,7 +96,25 @@
         <dependency>
             <groupId>com.google.firebase</groupId>
             <artifactId>firebase-admin</artifactId>
-            <version>6.11.0</version>
+            <version>6.13.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-common -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-common</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-messaging -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-messaging</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.firebase/firebase-core -->
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-core</artifactId>
         </dependency>
 
     </dependencies>
