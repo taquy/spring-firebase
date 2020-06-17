@@ -6,6 +6,8 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
 import fpt.fbiz.fremote.dtos.AuthSignInDto;
 import fpt.fbiz.fremote.dtos.AuthSignUpDto;
@@ -19,33 +21,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("public/auth")
 public class AuthController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("private")
-    public Object test() {
-        return "hello private";
-    }
+    @PostMapping("sign-up")
+    public Object register(@RequestBody AuthSignUpDto dto) throws ExecutionException, InterruptedException, FirebaseAuthException {
+        var instance = FirebaseAuth.getInstance();
 
-    @PostMapping("public/register")
-    public Object register(@RequestBody AuthSignUpDto dto) throws ExecutionException, InterruptedException {
         var user = userService.register(dto);
+        var request = new UserRecord.CreateRequest();
+        // store auth record
+        request.setEmail(user.getEmail());
+        request.setDisabled(true);
+        request.setEmailVerified(true);
+        request.setPassword(dto.getPassword());
+        request.setDisplayName(dto.getUsername());
 
+        instance.createUser(request);
+
+        // store user
         Firestore db = FirestoreClient.getFirestore();
-
         DocumentReference docRef = db.collection("users").document(user.getEmail());
-
-        System.out.println(user.toMap());
-
         ApiFuture<WriteResult> result = docRef.set(user.toMap());
         return result.get().getUpdateTime().toString();
     }
 
-    @PostMapping("public/sign-in")
-    public Object signIn(@RequestBody AuthSignInDto dto) throws ExecutionException, InterruptedException {
+    @PostMapping("sign-in")
+    public Object signIn(@RequestBody AuthSignInDto dto) throws ExecutionException, InterruptedException, FirebaseAuthException {
         var instance = FirebaseAuth.getInstance();
 
         if (StringUtils.isEmpty(dto.getEmail())) {
@@ -58,14 +63,16 @@ public class AuthController {
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
         if (document.exists()) {
-            System.out.println("Document data: " + document.getData());
             var data = document.getData();
             var user = MiscUtil.convertMapToObject(data, User.class);
-            return user;
+            assert data != null;
+            data.remove("password");
+
+            var authUser = instance.getUserByEmail(user.getEmail());
+            return instance.createCustomToken(authUser.getUid(), data);
         }
 
         System.out.println("No such document!");
-
         return null;
     }
 

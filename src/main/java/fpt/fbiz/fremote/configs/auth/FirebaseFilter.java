@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class FirebaseFilter extends OncePerRequestFilter {
 
-    private static String HEADER_NAME = "X-Authorization-Firebase";
+    private static String HEADER_NAME = "X-Auth";
 
     private FirebaseService firebaseService;
 
