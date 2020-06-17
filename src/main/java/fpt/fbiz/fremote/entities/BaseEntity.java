@@ -21,7 +21,7 @@ import java.util.Map;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    long id;
+    public Long id;
 
     public Map<String, Object> toMap() {
         return new ObjectMapper().convertValue(this, Map.class);
