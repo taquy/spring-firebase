@@ -42,7 +42,7 @@ public class AuthController {
 
         instance.createUser(request);
 
-        // store user
+        // store user in firestore
         Firestore db = FirestoreClient.getFirestore();
         DocumentReference docRef = db.collection("users").document(user.getEmail());
         ApiFuture<WriteResult> result = docRef.set(user.toMap());
@@ -71,7 +71,6 @@ public class AuthController {
             var authUser = instance.getUserByEmail(user.getEmail());
             return instance.createCustomToken(authUser.getUid(), data);
         }
-
         System.out.println("No such document!");
         return null;
     }

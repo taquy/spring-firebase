@@ -1,5 +1,6 @@
 package fpt.fbiz.fremote.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,15 +18,33 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "users")
+@Entity(name = "users")
 public class User extends BaseEntity implements UserDetails, Serializable {
     private static final long serialVersionUID = 4815877135015943617L;
 
+    @Column
     private String username;
+
+    @Column
     private String password;
 
+    @Column
     private String email;
 
-    protected Date createdAt = new Date();
+    @Column
+    @JsonProperty(value = "avatar_key")
+    private String avatarKey;
+
+    @Column
+    private Date dob;
+
+    @Column
+    @JsonProperty(value = "full_name")
+    private String fullName;
+
+    @Column
+    private String department;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Role> authorities;

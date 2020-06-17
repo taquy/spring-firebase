@@ -1,5 +1,6 @@
 package fpt.fbiz.fremote.configs.auth;
 
+import com.google.firebase.auth.FirebaseAuth;
 import fpt.fbiz.fremote.exceptions.FirebaseTokenInvalidException;
 import fpt.fbiz.fremote.services.FirebaseService;
 import org.springframework.security.core.Authentication;
