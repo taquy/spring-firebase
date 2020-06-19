@@ -8,15 +8,15 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Map;
 
-@Entity
-@Setter(AccessLevel.PUBLIC)
-@Getter(AccessLevel.PUBLIC)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Getter
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 @SequenceGenerator(name = "seq", initialValue = 1, allocationSize = 100)
 public class BaseEntity {
     @Id

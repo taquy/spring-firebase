@@ -5,14 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,26 +20,29 @@ public class Request extends BaseEntity {
     @Column
     private String reason;
 
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private User employee;
 
-    @Column
-    @JsonProperty(value="employee_id")
-    private long employeeId;
+    @OneToMany(mappedBy = "request")
+    private Set<CheckIn> checkIns;
+
+    @OneToMany(mappedBy = "request")
+    Set<RequestTask> requestTasks;
 
     @Column
-    @JsonProperty(value="working_date")
+    @JsonProperty(value = "working_date")
     private Date workingDate;
 
     @Column
-    @JsonProperty(value="accepted_date")
+    @JsonProperty(value = "accepted_date")
     private Date acceptedDate;
 
     @Column
-    @JsonProperty(value="is_accepted")
+    @JsonProperty(value = "is_accepted")
     private boolean isAccepted = false;
 
     @Column
-    @JsonProperty(value="check_in_time")
+    @JsonProperty(value = "check_in_time")
     private int checkInTime;
 }

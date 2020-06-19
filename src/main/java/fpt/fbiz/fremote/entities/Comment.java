@@ -1,15 +1,11 @@
 package fpt.fbiz.fremote.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.Date;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -18,19 +14,14 @@ import java.util.Date;
 @Table(name = "comments")
 @Entity(name = "comments")
 public class Comment extends BaseEntity {
-    @Column
+
+    @ManyToOne
+    @JoinColumn(name = "request_id", referencedColumnName = "id")
     private Request request;
 
-    @Column
-    @JsonProperty(value = "request_id")
-    private long requestId;
-
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private User employee;
-
-    @Column
-    @JsonProperty(value = "employee_id")
-    private long employeeId;
 
     @Column
     private String content;

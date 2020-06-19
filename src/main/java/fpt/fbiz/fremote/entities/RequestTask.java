@@ -1,15 +1,11 @@
 package fpt.fbiz.fremote.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.util.Date;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -24,17 +20,14 @@ public class RequestTask extends BaseEntity {
     @Column
     private String status;
 
-    @Column
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId("task_id")
+    @JoinColumn(name = "task_id")
     private Task task;
 
-    @Column
-    @JsonProperty(value = "task_id")
-    private long taskId;
-
-    @Column
+    @OneToOne(cascade = CascadeType.ALL)
+    @MapsId("request_id")
+    @JoinColumn(name = "request_id")
     private Request request;
 
-    @Column
-    @JsonProperty(value = "request_id")
-    private long requestId;
 }

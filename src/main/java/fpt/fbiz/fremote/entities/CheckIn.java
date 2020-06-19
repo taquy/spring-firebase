@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
@@ -18,12 +16,10 @@ import java.util.Date;
 @Table(name = "check_in")
 @Entity(name = "check_in")
 public class CheckIn extends BaseEntity {
-    @Column
-    private Request request;
 
-    @Column
-    @JsonProperty(value = "request_id")
-    private long requestId;
+    @ManyToOne
+    @JoinColumn(name = "request_id", referencedColumnName = "id")
+    private Request request;
 
     @Column
     @JsonProperty(value = "check_time")

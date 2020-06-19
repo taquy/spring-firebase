@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -52,6 +53,9 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Request> requests;
 
     @Override
     public String getPassword() {
