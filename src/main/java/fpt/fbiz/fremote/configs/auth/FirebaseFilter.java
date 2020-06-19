@@ -34,12 +34,12 @@ public class FirebaseFilter extends OncePerRequestFilter {
             return;
         } else {
             try {
-                FirebaseTokenHolder holder = firebaseService.parseToken(xAuth);
-
-                String userName = holder.getUid();
-
-                Authentication auth = new FirebaseAuthenticationToken(userName, holder);
-                SecurityContextHolder.getContext().setAuthentication(auth);
+//                FirebaseTokenHolder holder = firebaseService.parseToken(xAuth);
+//
+//                String userName = holder.getUid();
+//
+//                Authentication auth = new FirebaseAuthenticationToken(userName, holder);
+//                SecurityContextHolder.getContext().setAuthentication(auth);
 
                 filterChain.doFilter(request, response);
             } catch (FirebaseTokenInvalidException e) {

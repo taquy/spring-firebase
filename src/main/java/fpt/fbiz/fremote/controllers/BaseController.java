@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,19 +14,23 @@ public class BaseController<T extends BaseEntity, R extends JpaRepository<T, Lon
 
     private final S service;
 
+    @GetMapping()
     public Page list(Pageable pageable) {
         return service.list(pageable);
     }
 
-    public T show(long id) {
+    @GetMapping("{item_id}")
+    public T show(@PathVariable("item_id") long id) {
         return service.show(id);
     }
 
-    public void delete(long id) {
+    @DeleteMapping("{item_id}")
+    public void delete(@PathVariable("item_id") long id) {
         service.delete(id);
     }
 
-    public T createOrUpdate(T item) {
+    @PostMapping()
+    public T createOrUpdate(@RequestBody T item) {
         return service.createOrUpdate(item);
     }
 }

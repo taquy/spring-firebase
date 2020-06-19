@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
 public class BaseService<T extends BaseEntity, R extends JpaRepository<T, Long>> {
     private final R repository;

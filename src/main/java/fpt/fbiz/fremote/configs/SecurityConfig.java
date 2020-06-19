@@ -23,31 +23,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Order(Ordered.HIGHEST_PRECEDENCE)
-//    @Configuration
-//    protected static class AuthenticationSecurity extends GlobalAuthenticationConfigurerAdapter {
-//
-//        @Autowired
-//        private UserService userService;
-//
-//        @Autowired
-//        private FirebaseAuthenticationProvider firebaseProvider;
-//
-//        @Override
-//        public void init(AuthenticationManagerBuilder auth) throws Exception {
-//            auth.userDetailsService(userService);
-//            auth.authenticationProvider(firebaseProvider);
-//        }
-//    }
-
-
     @Autowired
     private FirebaseService firebaseService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
-                "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v2/swagger.json");
+        web.ignoring().antMatchers(
+                "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+                "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v2/swagger.json"
+        );
     }
 
     @Override
