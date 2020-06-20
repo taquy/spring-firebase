@@ -1,10 +1,5 @@
 package fpt.fbiz.fremote.configs.auth;
 
-import com.google.firebase.auth.FirebaseAuth;
-import fpt.fbiz.fremote.exceptions.FirebaseTokenInvalidException;
-import fpt.fbiz.fremote.services.FirebaseService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -14,15 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class FirebaseFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
 
     private static String HEADER_NAME = "X-Auth";
-
-    private FirebaseService firebaseService;
-
-    public FirebaseFilter(FirebaseService firebaseService) {
-        this.firebaseService = firebaseService;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
