@@ -33,21 +33,21 @@ public class BaseEntity {
 
     @CreatedBy
     @Column(name = "created_by")
-    @JsonProperty(value="created_by")
+    @JsonProperty(value = "created_by")
     private User createdBy;
 
     @CreatedDate
     @Column(name = "created_date")
-    @JsonProperty(value="created_date")
-    private Date createdDate;
+    @JsonProperty(value = "created_date")
+    private Date createdAt;
 
     @LastModifiedBy
     @Column(name = "last_modified_by")
-    @JsonProperty(value="last_modified_by")
-    private User lastModifiedBy;
+    @JsonProperty(value = "last_modified_by")
+    private User updatedBy;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
-    @JsonProperty(value="last_modified_date")
-    private Date lastModifiedDate;
+    @JsonProperty(value = "last_modified_date")
+    private Date updatedAt;
 }

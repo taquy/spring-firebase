@@ -19,11 +19,19 @@ public class ApiResponse {
         return response;
     }
 
+    public static ApiResponse success() {
+        return ApiResponse.success(null);
+    }
+
     public static ApiResponse error(Object body) {
         var response = new ApiResponse();
         response.setCode(ApiResponseCode.ERROR.name());
         response.setMessage(ApiResponseCode.ERROR.label);
         response.setBody(body);
         return response;
+    }
+
+    public static ApiResponse error() {
+        return ApiResponse.error(null);
     }
 }

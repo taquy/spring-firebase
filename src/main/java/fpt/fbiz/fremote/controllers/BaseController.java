@@ -2,8 +2,9 @@ package fpt.fbiz.fremote.controllers;
 
 import fpt.fbiz.fremote.entities.BaseEntity;
 import fpt.fbiz.fremote.services.BaseService;
+import fpt.fbiz.fremote.shared.ApiResponse;
+import fpt.fbiz.fremote.shared.CustomPager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,28 +18,31 @@ public class BaseController<T extends BaseEntity, R extends JpaRepository<T, Lon
     private final S service;
 
     @GetMapping()
-    public Page list(
+    public ApiResponse list(
             @PageableDefault(page = 0, size = 5)
             @SortDefault.SortDefaults({
-                    @SortDefault(sort = "created_at", direction = Sort.Direction.DESC),
-                    @SortDefault(sort = "id", direction = Sort.Direction.ASC)
+                    @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC),
+                    @SortDefault(sort = "id", direction = Sort.Direction.DESC)
             }) Pageable pageable
     ) {
-        return service.list(pageable);
+        var result = service.list(pageable);
+        return ApiResponse.success(CustomPager.load(result));
     }
 
     @GetMapping("{item_id}")
-    public T show(@PathVariable("item_id") long id) {
-        return service.show(id);
+    public ApiResponse show(@PathVariable("item_id") long id) {
+        return ApiResponse.success(service.show(id));
     }
 
     @DeleteMapping("{item_id}")
-    public void delete(@PathVariable("item_id") long id) {
+    public ApiResponse delete(@PathVariable("item_id") long id) {
         service.delete(id);
+        return ApiResponse.success();
     }
 
     @PostMapping()
-    public T createOrUpdate(@RequestBody T item) {
-        return service.createOrUpdate(item);
+    public ApiResponse createOrUpdate(@RequestBody T item) {
+        var result = service.createOrUpdate(item);
+        return ApiResponse.success(result);
     }
 }
