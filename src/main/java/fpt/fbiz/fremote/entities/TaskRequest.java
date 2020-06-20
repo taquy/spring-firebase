@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "request_task")
-@Entity(name = "request_task")
-public class RequestTask extends BaseEntity {
+@Table(name = "task_request")
+@Entity(name = "task_request")
+class TaskRequest extends BaseEntity {
     @Column
     private String note;
 

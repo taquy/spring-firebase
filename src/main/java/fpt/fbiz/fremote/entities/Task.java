@@ -18,16 +18,13 @@ import java.util.Set;
 public class Task extends BaseEntity {
 
     @OneToMany(mappedBy = "task")
-    Set<RequestTask> requestTasks;
+    Set<TaskRequest> requestTasks;
+
+    @OneToMany(mappedBy = "task")
+    Set<TaskUser> userTasks;
 
     @Column
     private String title;
-
-    @Column
-    private User employee;
-
-    @Column
-    private long employeeId;
 
     @Column
     @Lob

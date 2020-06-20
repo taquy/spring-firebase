@@ -28,7 +28,7 @@ public class Request extends BaseEntity {
     private Set<CheckIn> checkIns;
 
     @OneToMany(mappedBy = "request")
-    Set<RequestTask> requestTasks;
+    Set<TaskRequest> requestTasks;
 
     @Column
     @JsonProperty(value = "working_date")

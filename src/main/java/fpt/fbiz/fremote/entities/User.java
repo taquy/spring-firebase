@@ -58,6 +58,9 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @OneToMany(mappedBy = "employee")
     private Set<Request> requests;
 
+    @OneToMany(mappedBy = "employee")
+    Set<TaskUser> requestTasks;
+
     @Override
     public String getPassword() {
         return password;
