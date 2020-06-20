@@ -3,6 +3,7 @@ package fpt.fbiz.fremote.services;
 import fpt.fbiz.fremote.dtos.AuthSignUpDto;
 import fpt.fbiz.fremote.entities.Role;
 import fpt.fbiz.fremote.entities.User;
+import fpt.fbiz.fremote.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,10 +19,14 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService extends BaseService<User, UserRepository> implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository repository) {
+        super(repository);
+    }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        UserDetails userDetails = userRepository.findByUsername(username);
