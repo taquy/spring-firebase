@@ -1,5 +1,6 @@
 package fpt.fbiz.fremote.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private String username;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @Column

@@ -1,7 +1,9 @@
 package fpt.fbiz.fremote.configs.auth;
 
 import fpt.fbiz.fremote.exceptions.FirebaseUserNotExistsException;
+import fpt.fbiz.fremote.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class FirebaseAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-//    @Qualifier(value = UserServiceImpl.NAME)
+    @Qualifier(value = UserService.SERVICE_NAME)
     private UserDetailsService userService;
 
     public boolean supports(Class<?> authentication) {

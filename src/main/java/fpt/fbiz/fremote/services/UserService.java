@@ -18,8 +18,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service
+import static fpt.fbiz.fremote.services.UserService.SERVICE_NAME;
+
+@Service(SERVICE_NAME)
 public class UserService extends BaseService<User, UserRepository> implements UserDetailsService {
+
+    public final static String SERVICE_NAME = "USER_SERVICE";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,7 +48,7 @@ public class UserService extends BaseService<User, UserRepository> implements Us
     }
 
     @Transactional
-    public User register(
+    public User signUp(
             AuthSignUpDto dto
     ) {
         User user = new User();
