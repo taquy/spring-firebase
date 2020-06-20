@@ -94,6 +94,7 @@ public class UserService extends BaseService<User, UserRepository> implements Us
         var rawPassword = dto.getPassword();
         var encryptedPassword = passwordEncoder.encode(rawPassword);
         user.setPassword(encryptedPassword);
-        return user;
+
+        return userRepository.saveAndFlush(user);
     }
 }

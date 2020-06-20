@@ -1,5 +1,6 @@
 package fpt.fbiz.fremote.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,17 +30,21 @@ public class BaseEntity {
 
     @CreatedBy
     @Column(name = "created_by")
+    @JsonProperty(value="created_by")
     private User createdBy;
 
     @CreatedDate
     @Column(name = "created_date")
+    @JsonProperty(value="created_date")
     private Date createdDate;
 
     @LastModifiedBy
     @Column(name = "last_modified_by")
+    @JsonProperty(value="last_modified_by")
     private User lastModifiedBy;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
+    @JsonProperty(value="last_modified_date")
     private Date lastModifiedDate;
 }

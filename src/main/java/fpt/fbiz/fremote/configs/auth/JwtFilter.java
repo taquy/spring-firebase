@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtFilter extends OncePerRequestFilter {
-
     private static String HEADER_NAME = "X-Auth";
 
     @Override
@@ -22,7 +21,6 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         } else {
-            try {
 //                FirebaseTokenHolder holder = firebaseService.parseToken(xAuth);
 //
 //                String userName = holder.getUid();
@@ -30,10 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
 //                Authentication auth = new FirebaseAuthenticationToken(userName, holder);
 //                SecurityContextHolder.getContext().setAuthentication(auth);
 
-                filterChain.doFilter(request, response);
-            } catch (FirebaseTokenInvalidException e) {
-                throw new SecurityException(e);
-            }
+            filterChain.doFilter(request, response);
         }
     }
 

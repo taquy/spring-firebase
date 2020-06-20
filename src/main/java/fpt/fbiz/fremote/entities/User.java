@@ -49,6 +49,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @Column
     private String department;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Role> authorities;
 
@@ -69,18 +70,22 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return username;
     }
 
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return false;
     }
 
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return false;
     }
 
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return false;
     }
 
+    @JsonIgnore
     public boolean isEnabled() {
         return false;
     }
@@ -91,10 +96,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getEmail() {
-        return this.email;
     }
 
 }

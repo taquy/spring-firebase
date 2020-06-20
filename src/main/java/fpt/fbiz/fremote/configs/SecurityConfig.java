@@ -1,5 +1,6 @@
 package fpt.fbiz.fremote.configs;
 
+import fpt.fbiz.fremote.configs.auth.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 //@EnableGlobalMethodSecurity(securedEnabled = true)
 @EnableWebSecurity
@@ -29,9 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.addFilterBefore(tokenAuthorizationFilter(), BasicAuthenticationFilter.class).authorizeRequests()
-//                .antMatchers("/public").permitAll()
-//                .antMatchers("/private").authenticated()
-//                .and().csrf().disable();
+        http.addFilterBefore(new JwtFilter(), BasicAuthenticationFilter.class).authorizeRequests()
+                .antMatchers("/public").permitAll()
+                .antMatchers("/private").authenticated()
+                .and().csrf().disable();
     }
 }
