@@ -27,6 +27,7 @@ class AuthFacadeImpl implements AuthFacade {
     @Override
     public User getAuthUser() {
         var auth = (User) getAuthentication().getPrincipal();
-        return userRepository.findByUsername(auth.getUsername()).get(0);
+        var userOpt = userRepository.findById(auth.getId());
+        return userOpt.orElse(null);
     }
 }

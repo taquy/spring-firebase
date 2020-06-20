@@ -1,6 +1,7 @@
 package fpt.fbiz.fremote.services;
 
 import fpt.fbiz.fremote.entities.BaseEntity;
+import fpt.fbiz.fremote.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,12 +24,15 @@ public class BaseService<T extends BaseEntity, R extends JpaRepository<T, Long>>
         repository.deleteById(id);
     }
 
-    public T createOrUpdate(T item) {
+    public T createOrUpdate(T item, User editor) {
         if (item.getId() != null) {
             var oldItem = show(item.getId());
             if (oldItem == null) {
                 return null;
             }
+            item.setUpdatedBy(editor);
+        } else {
+            item.setCreatedBy(editor);
         }
         return repository.save(item);
     }

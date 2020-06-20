@@ -1,6 +1,7 @@
 package fpt.fbiz.fremote.controllers;
 
 import fpt.fbiz.fremote.entities.BaseEntity;
+import fpt.fbiz.fremote.facades.AuthFacade;
 import fpt.fbiz.fremote.services.BaseService;
 import fpt.fbiz.fremote.shared.ApiResponse;
 import fpt.fbiz.fremote.shared.CustomPager;
@@ -12,10 +13,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
+
 @RequiredArgsConstructor
 public class BaseController<T extends BaseEntity, R extends JpaRepository<T, Long>, S extends BaseService<T, R>> {
 
     private final S service;
+    private final AuthFacade authFacade;
 
     @GetMapping()
     public ApiResponse list(
@@ -42,7 +45,8 @@ public class BaseController<T extends BaseEntity, R extends JpaRepository<T, Lon
 
     @PostMapping()
     public ApiResponse createOrUpdate(@RequestBody T item) {
-        var result = service.createOrUpdate(item);
+        var editor = authFacade.getAuthUser();
+        var result = service.createOrUpdate(item, editor);
         return ApiResponse.success(result);
     }
 }

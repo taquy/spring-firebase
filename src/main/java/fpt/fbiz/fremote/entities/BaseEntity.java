@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+@Setter
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -37,17 +38,17 @@ public class BaseEntity {
     private User createdBy;
 
     @CreatedDate
-    @Column(name = "created_date")
-    @JsonProperty(value = "created_date")
+    @Column(name = "created_at")
+    @JsonProperty(value = "created_at")
     private Date createdAt;
 
     @LastModifiedBy
-    @Column(name = "last_modified_by")
-    @JsonProperty(value = "last_modified_by")
+    @Column(name = "updated_by")
+    @JsonProperty(value = "updated_by")
     private User updatedBy;
 
     @LastModifiedDate
-    @Column(name = "last_modified_date")
-    @JsonProperty(value = "last_modified_date")
+    @Column(name = "updated_at")
+    @JsonProperty(value = "updated_at")
     private Date updatedAt;
 }

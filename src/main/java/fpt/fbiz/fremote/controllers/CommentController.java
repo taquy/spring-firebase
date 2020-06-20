@@ -2,6 +2,7 @@ package fpt.fbiz.fremote.controllers;
 
 import fpt.fbiz.fremote.entities.Comment;
 import fpt.fbiz.fremote.entities.User;
+import fpt.fbiz.fremote.facades.AuthFacade;
 import fpt.fbiz.fremote.repositories.CommentRepository;
 import fpt.fbiz.fremote.repositories.UserRepository;
 import fpt.fbiz.fremote.services.CommentService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("private/comments")
 class CommentController extends BaseController<Comment, CommentRepository, CommentService> {
-    public CommentController(CommentService service) {
-        super(service);
+    public CommentController(CommentService service, AuthFacade authFacade) {
+        super(service, authFacade);
     }
 }

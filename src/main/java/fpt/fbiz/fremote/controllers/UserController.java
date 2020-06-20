@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("private/users")
 class UserController extends BaseController<User, UserRepository, UserService> {
-    public UserController(UserService service) {
-        super(service);
-    }
 
-    @Autowired
     private AuthFacade authFacade;
+
+    public UserController(UserService service, AuthFacade authFacade) {
+        super(service, authFacade);
+        this.authFacade = authFacade;
+    }
 
     @GetMapping("auth")
     public ApiResponse getAuthUser() {
