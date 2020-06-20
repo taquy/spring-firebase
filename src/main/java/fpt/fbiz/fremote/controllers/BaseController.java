@@ -5,7 +5,10 @@ import fpt.fbiz.fremote.services.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,7 +17,13 @@ public class BaseController<T extends BaseEntity, R extends JpaRepository<T, Lon
     private final S service;
 
     @GetMapping()
-    public Page list(Pageable pageable) {
+    public Page list(
+            @PageableDefault(page = 0, size = 5)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "created_at", direction = Sort.Direction.DESC),
+                    @SortDefault(sort = "id", direction = Sort.Direction.ASC)
+            }) Pageable pageable
+    ) {
         return service.list(pageable);
     }
 
