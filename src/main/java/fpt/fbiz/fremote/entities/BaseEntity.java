@@ -12,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -25,7 +26,9 @@ public class BaseEntity {
     public Long id;
 
     public Map<String, Object> toMap() {
-        return new ObjectMapper().convertValue(this, Map.class);
+        var map = new ObjectMapper().convertValue(this, Map.class);
+        map.values().removeAll(Collections.singleton(null));
+        return map;
     }
 
     @CreatedBy

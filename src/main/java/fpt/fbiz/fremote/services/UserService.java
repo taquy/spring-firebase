@@ -69,6 +69,8 @@ public class UserService extends BaseService<User, UserRepository> implements Us
 
         Map<String, Object> map = user.toMap();
 
+        System.out.println(map);
+
         String token = JWT.create()
                 .withSubject(SecurityConstant.SUBJECT)
                 .withClaim("claims", map)
