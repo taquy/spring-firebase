@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("public/comments")
+@RequestMapping("private/comments")
 class CommentController extends BaseController<Comment, CommentRepository, CommentService> {
     public CommentController(CommentService service) {
         super(service);

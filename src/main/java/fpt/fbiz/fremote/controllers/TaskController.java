@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("public/tasks")
+@RequestMapping("private/tasks")
 class TaskController extends BaseController<Task, TaskRepository, TaskService> {
     public TaskController(TaskService service) {
         super(service);

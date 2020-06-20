@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("public/requests")
+@RequestMapping("private/requests")
 public class RequestController extends BaseController<Request, RequestRepository, RequestService> {
     public RequestController(RequestService service) {
         super(service);
