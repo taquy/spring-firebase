@@ -13,14 +13,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "task_user")
 @Entity(name = "task_user")
+public
 class TaskUser extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId("task_id")
+    @MapsId("id")
     @JoinColumn(name = "task_id")
     private Task task;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @MapsId("user_id")
+    @MapsId("id")
     @JoinColumn(name = "user_id")
     private User employee;
 

@@ -28,14 +28,14 @@ public class UserService extends BaseService<User, UserRepository> implements Us
 
     public final static String SERVICE_NAME = "USER_SERVICE";
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
         super(repository);
+        this.userRepository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
