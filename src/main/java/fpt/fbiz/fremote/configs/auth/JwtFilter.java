@@ -1,5 +1,12 @@
 package fpt.fbiz.fremote.configs.auth;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import fpt.fbiz.fremote.consts.SecurityConstant;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -8,28 +15,46 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class JwtFilter extends OncePerRequestFilter {
-    private static String HEADER_NAME = "X-Auth";
+public class JwtFilter extends BasicAuthenticationFilter {
+
+    public JwtFilter(AuthenticationManager authManager) {
+        super(authManager);
+    }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws ServletException, IOException {
 
-        String xAuth = request.getHeader(HEADER_NAME);
-        if (StringUtils.isEmpty(xAuth)) {
-            filterChain.doFilter(request, response);
-            return;
-        } else {
-//                FirebaseTokenHolder holder = firebaseService.parseToken(xAuth);
-//
-//                String userName = holder.getUid();
-//
-//                Authentication auth = new FirebaseAuthenticationToken(userName, holder);
-//                SecurityContextHolder.getContext().setAuthentication(auth);
+        String header = req.getHeader(SecurityConstant.HEADER_STRING);
 
-            filterChain.doFilter(request, response);
+        if (header == null || !header.startsWith(SecurityConstant.TOKEN_PREFIX)) {
+            chain.doFilter(req, res);
+            return;
         }
+
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        chain.doFilter(req, res);
+    }
+
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+        String token = request.getHeader(SecurityConstant.HEADER_STRING);
+        if (token != null) {
+
+            String user = JWT.require(Algorithm.HMAC512(SecurityConstant.SECRET.getBytes()))
+                    .build()
+                    .verify(token.replace(SecurityConstant.TOKEN_PREFIX, ""))
+                    .getSubject();
+
+            if (user != null) {
+                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+            }
+            return null;
+        }
+        return null;
     }
 
 }

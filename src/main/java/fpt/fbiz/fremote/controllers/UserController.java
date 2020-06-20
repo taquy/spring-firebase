@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("public/users")
+@RequestMapping("private/users")
 class UserController extends BaseController<User, UserRepository, UserService> {
     public UserController(UserService service) {
         super(service);
