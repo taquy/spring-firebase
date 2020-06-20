@@ -38,38 +38,13 @@ public class UserService extends BaseService<User, UserRepository> implements Us
         super(repository);
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        UserDetails userDetails = userRepository.findByUsername(username);
-        UserDetails userDetails = null;
-//        if (userDetails == null)
-//            return null;
-
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
-        for (GrantedAuthority role : userDetails.getAuthorities()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getAuthority()));
-        }
-
-        return new org.springframework.security.core.userdetails.User(userDetails.getUsername(),
-                userDetails.getPassword(), userDetails.getAuthorities());
-    }
-
-
     @Transactional
-    public AuthResult signIn(AuthSignInDto dto) throws Exception {
+    public AuthResult signIn(AuthSignInDto dto) throws UsernameNotFoundException {
         var result = new AuthResult();
 
-        var user = userRepository.findByEmail(dto.getEmail());
-
-        if (user == null) {
-            user = userRepository.findByUsername(dto.getUsername());
-            if (user == null) {
-                throw new Exception("User not found");
-            }
-        }
+        var user = getUser(dto.getUsername());
 
         Map<String, Object> map = user.toMap();
-
-        System.out.println(map);
 
         String token = JWT.create()
                 .withSubject(SecurityConstant.SUBJECT)
@@ -98,5 +73,23 @@ public class UserService extends BaseService<User, UserRepository> implements Us
         user.setPassword(encryptedPassword);
 
         return userRepository.saveAndFlush(user);
+    }
+
+    private User getUser(String username) throws UsernameNotFoundException {
+        var user = userRepository.findByEmail(username);
+
+        if (user == null || user.size() == 0) {
+            user = userRepository.findByUsername(username);
+            if (user == null || user.size() == 0) {
+                throw new UsernameNotFoundException("User not found");
+            }
+        }
+
+        return user.get(0);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return getUser(username);
     }
 }

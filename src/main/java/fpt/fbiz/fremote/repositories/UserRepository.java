@@ -3,8 +3,10 @@ package fpt.fbiz.fremote.repositories;
 import fpt.fbiz.fremote.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    User findByEmail(String email);
+import java.util.List;
 
-    User findByUsername(String username);
+public interface UserRepository extends JpaRepository<User, Long> {
+    List<User> findByEmail(String email);
+
+    List<User> findByUsername(String username);
 }
