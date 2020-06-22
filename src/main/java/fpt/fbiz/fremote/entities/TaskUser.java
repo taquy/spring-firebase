@@ -14,15 +14,19 @@ import javax.persistence.*;
 @Table(name = "task_user")
 @Entity(name = "task_user")
 public
-class TaskUser extends BaseEntity {
-    @OneToOne(cascade = CascadeType.ALL)
-    @MapsId("id")
+class TaskUser {
+
+    @EmbeddedId
+    TaskUserKey id;
+
+    @ManyToOne
+    @MapsId("task_id")
     @JoinColumn(name = "task_id")
     private Task task;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @MapsId("id")
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @MapsId("employee_id")
+    @JoinColumn(name = "employee_id")
     private User employee;
 
 }

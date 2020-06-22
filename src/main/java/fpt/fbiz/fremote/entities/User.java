@@ -55,9 +55,11 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         return authorities;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "employee")
     private Set<Request> requests;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "employee")
     Set<TaskUser> requestTasks;
 

@@ -17,10 +17,10 @@ import java.util.Set;
 @Entity(name = "tasks")
 public class Task extends BaseEntity {
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     Set<TaskRequest> requestTasks;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     Set<TaskUser> userTasks;
 
     @Column
