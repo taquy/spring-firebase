@@ -17,7 +17,7 @@ public
 class TaskUser {
 
     @EmbeddedId
-    TaskUserKey id;
+    private TaskUserKey id;
 
     @ManyToOne
     @MapsId("task_id")

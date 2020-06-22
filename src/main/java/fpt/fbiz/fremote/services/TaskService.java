@@ -23,12 +23,16 @@ public class TaskService extends BaseService<Task, TaskRepository> {
     private final
     TaskUserRepository taskUserRepository;
 
+    private final
+    TaskRepository taskRepository;
+
     public TaskService(
             TaskRepository repository, UserRepository userRepository, TaskUserRepository taskUserRepository
     ) {
         super(repository);
         this.userRepository = userRepository;
         this.taskUserRepository = taskUserRepository;
+        this.taskRepository = repository;
     }
 
     public CustomPager listTasksByUser(
@@ -40,7 +44,7 @@ public class TaskService extends BaseService<Task, TaskRepository> {
         }
 
         var results = taskUserRepository.findAllByEmployeeId(userId, pageable);
-        return CustomPager.load(results);
+        return CustomPager.load(results.map(TaskUser::getTask));
     }
 
     public Task assignUsers(

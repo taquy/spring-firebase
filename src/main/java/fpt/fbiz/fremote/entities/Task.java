@@ -1,5 +1,6 @@
 package fpt.fbiz.fremote.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,11 @@ import java.util.Set;
 @Entity(name = "tasks")
 public class Task extends BaseEntity {
 
+    @JsonIgnore
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     Set<TaskRequest> requestTasks;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
     Set<TaskUser> userTasks;
 

@@ -6,7 +6,6 @@ import fpt.fbiz.fremote.facades.AuthFacade;
 import fpt.fbiz.fremote.repositories.TaskRepository;
 import fpt.fbiz.fremote.services.TaskService;
 import fpt.fbiz.fremote.shared.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
