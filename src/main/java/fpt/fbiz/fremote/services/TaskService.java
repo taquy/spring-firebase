@@ -3,6 +3,7 @@ package fpt.fbiz.fremote.services;
 import fpt.fbiz.fremote.dtos.TaskUserAssignDto;
 import fpt.fbiz.fremote.entities.Task;
 import fpt.fbiz.fremote.entities.TaskUser;
+import fpt.fbiz.fremote.entities.TaskUserKey;
 import fpt.fbiz.fremote.repositories.TaskRepository;
 import fpt.fbiz.fremote.repositories.TaskUserRepository;
 import fpt.fbiz.fremote.repositories.UserRepository;
@@ -57,8 +58,8 @@ public class TaskService extends BaseService<Task, TaskRepository> {
         var records = new ArrayList<TaskUser>();
         users.forEach(user -> {
             var record = new TaskUser();
-            record.setEmployee(user);
-            record.setTask(task);
+            var key = new TaskUserKey(task.getId(), user.getId());
+            record.setId(key);
             records.add(record);
         });
 

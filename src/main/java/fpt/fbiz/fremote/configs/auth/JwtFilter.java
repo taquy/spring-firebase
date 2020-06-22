@@ -8,56 +8,29 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fpt.fbiz.fremote.consts.SecurityConstant;
 import fpt.fbiz.fremote.entities.User;
+import fpt.fbiz.fremote.repositories.UserRepository;
 import fpt.fbiz.fremote.shared.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Map;
 
-public class JwtFilter extends BasicAuthenticationFilter {
+@Component
+public class JwtFilter extends GenericFilterBean {
 
-    public JwtFilter(AuthenticationManager authManager) {
-        super(authManager);
-    }
+    private final UserRepository userRepository;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
-            throws ServletException, IOException {
-
-        String header = req.getHeader(SecurityConstant.HEADER_STRING);
-
-        if (header == null || !header.startsWith(SecurityConstant.TOKEN_PREFIX)) {
-            chain.doFilter(req, res);
-            return;
-        }
-
-        try {
-            var authentication = getAuthentication(req);
-
-            if (authentication == null) {
-                throw new Exception("Unable to parse token");
-            }
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (Exception ex) {
-            var result = ApiResponse.error(ex.getMessage());
-            res.getOutputStream().write(restResponseBytes(result));
-        }
-
-        chain.doFilter(req, res);
+    public JwtFilter(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     private byte[] restResponseBytes(ApiResponse response) throws IOException {
@@ -82,11 +55,44 @@ public class JwtFilter extends BasicAuthenticationFilter {
             var claims = jsonObject.get("claims");
 
             Gson gson = new Gson();
-            User user = gson.fromJson(claims, User.class);
+            var userObj = gson.fromJson(claims, User.class);
+            var userOpt = userRepository.findById(userObj.getId());
+
+            if (!userOpt.isPresent()) {
+                return null;
+            }
+
+            var user = userOpt.get();
 
             return new UsernamePasswordAuthenticationToken(user, user, user.getAuthorities());
         }
         return null;
     }
 
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+        var req = (HttpServletRequest) servletRequest;
+        var res = (HttpServletResponse) servletResponse;
+        String header = req.getHeader(SecurityConstant.HEADER_STRING);
+
+        if (header == null || !header.startsWith(SecurityConstant.TOKEN_PREFIX)) {
+            chain.doFilter(req, res);
+            return;
+        }
+
+        try {
+            var authentication = getAuthentication(req);
+
+            if (authentication == null) {
+                throw new Exception("Unable to parse token");
+            }
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (Exception ex) {
+            var result = ApiResponse.error(ex.getMessage());
+            res.getOutputStream().write(restResponseBytes(result));
+        }
+
+        chain.doFilter(req, res);
+    }
 }
